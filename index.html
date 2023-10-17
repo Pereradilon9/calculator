@@ -1,52 +1,126 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator using javascript - Easy Tutorials</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Dilon's Calculator</title>
+    <link rel="icon" href="icons8-calculator-94.png" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="calculator.css">
 </head>
 <body>
+    <div class="calculator">
+        <div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+            <div class="wave"></div>
+         </div>
+        <div class="display">
+            <input type="text" id="display" value="" disabled>
+        </div>
+        <div class="buttons">
+            <button onclick="appendToDisplay('9')">9</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button class="operator" onclick="clearDisplay()">C</button>
+            <button class="operator"  onclick="removeLastValue()">Back</button>
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button class="operator" onclick="appendToDisplay('/')">/</button>
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button class="operator" onclick="appendToDisplay('*')">*</button>
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button class="operator" onclick="appendToDisplay('-')">-</button>
+            <button class="operator"  onclick="addOneZero()">0</button>
+            <button class="operator"  onclick="addTwoZeros()">00</button>
+            <button class="operator"  onclick="calculateSquareRoot()">√</button>
+            <button class="operator" onclick="appendToDisplay('+')">+</button>
+            <button class="operator" onclick="calculatePercentage()">%</button>
+            <button class="operator" onclick="calculateSquare()">x<sup>2</sup></button>
+            <button class="operator" onclick="appendToDisplay('π')">π</button>
+            <button class="operator"  onclick="calculate()" >=</button>
+        </div>
+    </div>
 
-<div class="container">
-  <div class="calculator">
-    <form>
-      <div class="display">
-        <input type="text" name="display">
-      </div>
-      <div>
-        <input type="button" value="AC" onclick="display.value = '' " class="operator">
-        <input type="button" value="DE" onclick="display.value =  display.value.toString().slice(0,-1)" class="operator">
-        <input type="button" value="." onclick="display.value += '.' " class="operator">
-        <input type="button" value="/" onclick="display.value += '/' " class="operator">
-      </div>
-      <div>
-        <input type="button" value="7" onclick="display.value += '7' ">
-        <input type="button" value="8" onclick="display.value += '8' ">
-        <input type="button" value="9" onclick="display.value += '9' ">
-        <input type="button" value="*" onclick="display.value += '*' " class="operator">
-      </div>
-      <div>
-        <input type="button" value="4" onclick="display.value += '4' ">
-        <input type="button" value="5" onclick="display.value += '5' ">
-        <input type="button" value="6" onclick="display.value += '6' ">
-        <input type="button" value="-" onclick="display.value += '-' " class="operator">
-      </div>
-      <div>
-        <input type="button" value="1" onclick="display.value += '1' ">
-        <input type="button" value="2" onclick="display.value += '2' ">
-        <input type="button" value="3" onclick="display.value += '3' ">
-        <input type="button" value="+" onclick="display.value += '+' " class="operator">
-      </div>
-      <div>
-        <input type="button" value="00" onclick="display.value += '00' ">
-        <input type="button" value="0" onclick="display.value += '0' ">
-        <input type="button" value="=" onclick="display.value = eval(display.value)" class="equal operator">
-       
-      </div>
-    </form>
-  </div>
-</div>
+    <script>
+        function appendToDisplay(value) {
+            document.getElementById("display").value += value;
+        }
+
+        function clearDisplay() {
+            document.getElementById("display").value = "";
+        }
+
+        function calculate() {
+            try {
+                document.getElementById("display").value = eval(document.getElementById("display").value);
+            } catch (e) {
+                document.getElementById("display").value = "Error";
+            }
+        }
+
+        function addOneZero() {
+            appendToDisplay('0');
+        }
+
+        function addTwoZeros() {
+            appendToDisplay('00');
+        }
+
+        function calculateSquareRoot() {
+            const value = parseFloat(document.getElementById("display").value);
+            if (!isNaN(value)) {
+                document.getElementById("display").value = Math.sqrt(value);
+            } else {
+                document.getElementById("display").value = "Error";
+            }
+        }
+
+        function removeLastValue() {
+    const currentValue = document.getElementById("display").value;
+    if (currentValue.length > 0) {
+        // Remove the last character from the display value
+        document.getElementById("display").value = currentValue.slice(0, -1);
+    }
+}
+
+function calculatePercentage() {
+    const currentValue = parseFloat(document.getElementById("display").value);
+    if (!isNaN(currentValue)) {
+        document.getElementById("display").value = (currentValue / 100).toString();
+    }
+}
+
+function calculateSquare() {
+    const currentValue = parseFloat(document.getElementById("display").value);
+    if (!isNaN(currentValue)) {
+        document.getElementById("display").value = (currentValue * currentValue).toString();
+    }
+}
+
+function appendToDisplay(value) {
+    if (value === 'π') {
+        document.getElementById("display").value += Math.PI;
+    } else {
+        document.getElementById("display").value += value;
+    }
+}
 
 
+        // Keyboard support
+        document.addEventListener("keydown", function (event) {
+            if (event.key.match(/[0-9+\-*/.=]|Enter|Backspace/)) {
+                if (event.key === "Enter") {
+                    calculate();
+                } else if (event.key === "Backspace") {
+                    clearDisplay();
+                } else {
+                    appendToDisplay(event.key);
+                }
+                event.preventDefault();
+            }
+        });
+    </script>
 </body>
 </html>
